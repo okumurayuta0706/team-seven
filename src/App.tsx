@@ -1,34 +1,104 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import {Box, Button, Container, Flex, Text, TextField} from '@radix-ui/themes'
 import './App.css'
+import { CheckCircledIcon, DotsHorizontalIcon, FontRomanIcon, Pencil1Icon, PlusIcon } from '@radix-ui/react-icons'
+import { useState } from 'react'
+
+type Task = {
+  id: string
+  title: string
+  description: string
+  completed: boolean
+}
+
+function TaskForm({ onSubmit, onCancel, defaultValues } : { onSubmit : React.FormEventHandler<HTMLFormElement>, onCancel: () => void, defaultValues?: Task}) { 
+  return        <form onSubmit={onSubmit}>
+          <Flex direction='column' gap='3' p='4'>
+           <label>
+            <TextField.Root name='title' placeholder='Title' variant='soft' size='3' color='gray' defaultValue={defaultValues?.title} />
+          </label> 
+          <label>
+            <TextField.Root name='description' placeholder='Description' variant='soft' color='gray' defaultValue={defaultValues?.description} />
+          </label> 
+          <Flex direction='row-reverse' gap='2'>
+            <Button color='red' size='3'>Add task</Button>
+            <Button type='button' color='gray' size='3' onClick={onCancel}>Cancel</Button>
+           </Flex>
+         </Flex>
+       </form>
+}
 
 function App() {
-  const [count, setCount] = useState(0)
-
+  const[tasks, setTasks] = useState<Task[]>([])
+  const[modalOpen, setModalOpen] =useState(false)
+  const[selectedTask, setSelectedTask] = useState<Task | undefined>()
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
+    <Container size='4' p='4'>
+      <Flex gap='4' direction='column' >
+        <Text size='7' weight='bold' >
+          Inbox
+        </Text>
+        <Flex justify='start' direction='column'>
+          {tasks.filter(task => !task.completed).map(task => (
+          <Flex key={task.id} gap='4' align='start' pt='5' className='row'>
+            < Button variant='ghost' color='gray'>
+              <Flex as='span' justify='center' align='center' onClick={() => setTasks(prev=> prev.map(ele => ele.id === task.id ?{ ...task, completed: true} : ele))}>
+                <CheckCircledIcon />
+              </Flex> 
+            </Button>
+            <Flex pb='4' direction='column' flexGrow='1'>
+              <Text size='2'>{task.title}</Text> 
+              <Text size='1' color='gray'>{task.description}</Text>
+            </Flex>
+            < Button variant='ghost' color='gray'>
+            <Flex as='span' justify='center' align='center' onClick={() => {
+              setSelectedTask(task) 
+              setModalOpen(true)
+            }}>
+              <Pencil1Icon />
+            </Flex>
+            </Button>
+            < Button variant='ghost' color='gray'>
+            <Flex as='span' justify='center' align='center'>
+            <DotsHorizontalIcon />
+            </Flex>
+            </Button>
+          </Flex> 
+          ))}
+        </Flex>
+        {!modalOpen ? (
+       <Flex justify='start'>
+        <button className='add-button' onClick={() => setModalOpen(true)}>
+          <span className='icon'>
+           <PlusIcon />
+          </span>
+          <Text weight='light' size='2'>
+           Add a task
+         </Text>
         </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+      </Flex>
+        ) : (
+        <Box className='form-wrapper'>
+        <TaskForm onSubmit={e => {
+          e.preventDefault()
+          const formData = new FormData(e.currentTarget)
+          const title = formData.get('title')?.toString()
+          const description = formData.get('description')?.toString()
+          if(!title || !description) return
+          if(selectedTask) {
+            setTasks(prev => prev.map(task => task.id === selectedTask.id ? { ...task, title, description} : task))
+          } else {
+            setTasks(prev => [...prev,{ id: Date.now().toString() , title, description, completed: false }])
+          }
+          setModalOpen(false)
+          setSelectedTask(undefined)
+        }}
+        onCancel={() => setModalOpen(false)}
+        defaultValues={selectedTask}
+        />
+      </Box>
+      )}
+    </Flex>
+  </Container>
   )
 }
 
