@@ -47,6 +47,7 @@
   border: solid 1px #e0e0e0
 }
 
+
 .popup {
   display:flex;
   flex-direction: column;
@@ -68,3 +69,13 @@
   from { opacity: 0; transform: translate(-50%, -40%);}
   to { opacity: 1; transform: translate(-50%, -30%);}
 }
+
+.gotreebutton{
+  background-color:#56bf5f;
+  color:brown;
+}
+.backbutton{
+  background-color:#dc4b3e;
+  color:#ffffff;
+}
+

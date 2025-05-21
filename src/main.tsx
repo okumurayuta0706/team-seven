@@ -6,6 +6,7 @@ import './index.css'
 import App from './App.tsx'
 import "@radix-ui/themes/styles.css";
 import { TaskProvider } from './contexts/TaskContext.tsx';
+import Tree from './components/Tree.tsx';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -15,6 +16,7 @@ createRoot(document.getElementById('root')!).render(
       <TaskProvider>
       <Routes>
         <Route path="/" element={<App />} />
+        <Route path="/tree" element={<Tree />} />
       </Routes>
       </TaskProvider>
       

@@ -1,4 +1,4 @@
-import {Box, Button, Container, Flex, Text, TextField} from '@radix-ui/themes'
+import { Box, Button, Container, Flex, Text, TextField } from '@radix-ui/themes'
 import './App.css'
 
 import { CheckCircledIcon, DotsHorizontalIcon, Pencil1Icon, PlusIcon } from '@radix-ui/react-icons'
@@ -6,6 +6,7 @@ import { useTaskContext } from './contexts/TaskContext'
 import { useState } from 'react'
 import{ useNavigate } from 'react-router'
 
+import { useNavigate } from "react-router";
 
 type Task = {
   id: string
@@ -16,24 +17,25 @@ type Task = {
 
 // task1 completed: true or false
 
-function TaskForm({ onSubmit, onCancel, defaultValues } : { onSubmit : React.FormEventHandler<HTMLFormElement>, onCancel: () => void, defaultValues?: Task}) { 
-  return        <form onSubmit={onSubmit}>
-          <Flex direction='column' gap='3' p='4'>
-           <label>
-            <TextField.Root name='title' placeholder='Title' variant='soft' size='3' color='gray' defaultValue={defaultValues?.title} />
-          </label> 
-          <label>
-            <TextField.Root name='description' placeholder='Description' variant='soft' color='gray' defaultValue={defaultValues?.description} />
-          </label> 
-          <Flex direction='row-reverse' gap='2'>
-            <Button color='red' size='3'>Add task</Button>
-            <Button type='button' color='gray' size='3' onClick={onCancel}>Cancel</Button>
-           </Flex>
-         </Flex>
-       </form>
+function TaskForm({ onSubmit, onCancel, defaultValues }: { onSubmit: React.FormEventHandler<HTMLFormElement>, onCancel: () => void, defaultValues?: Task }) {
+  return <form onSubmit={onSubmit}>
+    <Flex direction='column' gap='3' p='4'>
+      <label>
+        <TextField.Root name='title' placeholder='Title' variant='soft' size='3' color='gray' defaultValue={defaultValues?.title} />
+      </label>
+      <label>
+        <TextField.Root name='description' placeholder='Description' variant='soft' color='gray' defaultValue={defaultValues?.description} />
+      </label>
+      <Flex direction='row-reverse' gap='2'>
+        <Button color='red' size='3'>Add task</Button>
+        <Button type='button' color='gray' size='3' onClick={onCancel}>Cancel</Button>
+      </Flex>
+    </Flex>
+  </form>
 }
 
 function App() {
+
 
 const {tasks, 
             setTasks,
@@ -60,6 +62,7 @@ e.preventDefault()
 navigate("/puzzle")
 }
 
+
   return (
     <Container size='4' p='4'>
       <Flex gap='4' direction='column' >
@@ -68,6 +71,7 @@ navigate("/puzzle")
         </Text>
         <Flex justify='start' direction='column'>
           {tasks.filter(task => !task.completed).map(task => (
+
           <Flex key={task.id} gap='4' align='start' pt='5' className='row'>
             < Button variant='ghost' color='gray'>
               <Flex as='span' justify='center' align='center' onClick={() => handleTaskCompletion(task)}>
@@ -84,28 +88,31 @@ navigate("/puzzle")
               setModdalOpen(true)
             }}>
               <Pencil1Icon />
+
+                </Flex>
+              </Button>
+              < Button variant='ghost' color='gray'>
+                <Flex as='span' justify='center' align='center'>
+                  <DotsHorizontalIcon />
+                </Flex>
+              </Button>
+
             </Flex>
-            </Button>
-            < Button variant='ghost' color='gray'>
-            <Flex as='span' justify='center' align='center'>
-            <DotsHorizontalIcon />
-            </Flex>
-            </Button>
-          </Flex> 
           ))}
         </Flex>
         {!modalOpen ? (
-       <Flex justify='start'>
-        <button className='add-button' onClick={() => setModdalOpen(true)}>
-          <span className='icon'>
-           <PlusIcon />
-          </span>
-          <Text weight='light' size='2'>
-           Add a task
-         </Text>
-        </button>
-      </Flex>
+          <Flex justify='start'>
+            <button className='add-button' onClick={() => setModdalOpen(true)}>
+              <span className='icon'>
+                <PlusIcon />
+              </span>
+              <Text weight='light' size='2'>
+                Add a task
+              </Text>
+            </button>
+          </Flex>
         ) : (
+
         <Box className='form-wrapper'>
         <TaskForm onSubmit={e => {
           e.preventDefault()
@@ -150,6 +157,7 @@ navigate("/puzzle")
       </div>
     )} 
   </Container>
+
   )
 }
 

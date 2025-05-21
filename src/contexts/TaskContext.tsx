@@ -26,6 +26,8 @@ export const TaskProvider: React.FC<{ children: React.ReactNode }> = ({
     const [selectedTask, setSelectedTask] = useState<Task | undefined>();
     const [modalOpen, setModdalOpen] = useState(false);
 
+    // const [point, setPoint] = useState(0)
+
     const point = tasks.filter((task) => task.completed).length;
 
     return (
