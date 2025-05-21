@@ -6,6 +6,7 @@ import { useTaskContext } from './contexts/TaskContext'
 
 import { useNavigate } from "react-router";
 
+
 type Task = {
   id: string
   title: string
@@ -118,9 +119,11 @@ function App() {
       <Flex>
         <button className='gotreebutton' onClick={() => navigate("/tree")}>木の成長を見る</button>
       </Flex>
+
       
     </Container>
-    
+
+
   )
 }
 

@@ -7,12 +7,13 @@ import App from './App.tsx'
 import "@radix-ui/themes/styles.css";
 import { TaskProvider } from './contexts/TaskContext.tsx';
 import Tree from './components/Tree.tsx';
+import Header from './components/Header.tsx';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
-    
-    <Theme>
+    <Header>
+      <Theme>
       <TaskProvider>
       <Routes>
         <Route path="/" element={<App />} />
@@ -20,7 +21,9 @@ createRoot(document.getElementById('root')!).render(
       </Routes>
       </TaskProvider>
       
-    </Theme>
+      </Theme>
+    </Header>
+    
     </BrowserRouter>
   </StrictMode>,
 )
