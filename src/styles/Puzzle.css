@@ -1,0 +1,27 @@
+.puzzle-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 80px);
+    grid-template-rows: repeat(3, 80px);
+    gap: 4px;
+    justify-content: center;
+    margin: 24px 0;
+}
+
+.puzzle-piece {
+    width: 80px;
+    height: 80px;
+}
+
+.puzzle-piece img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.puzzle-placeholder {
+    background: #eee;
+    border: 1px dashed #bbb;
+    width: 100%;
+    height: 100%;
+}

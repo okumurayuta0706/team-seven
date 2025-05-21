@@ -3,8 +3,9 @@ import './App.css'
 
 import { CheckCircledIcon, DotsHorizontalIcon, Pencil1Icon, PlusIcon } from '@radix-ui/react-icons'
 import { useTaskContext } from './contexts/TaskContext'
+import { useState } from 'react'
+import{ useNavigate } from 'react-router'
 
-import { useNavigate } from "react-router";
 
 
 type Task = {
@@ -35,12 +36,32 @@ function TaskForm({ onSubmit, onCancel, defaultValues }: { onSubmit: React.FormE
 
 function App() {
 
-  const { point, tasks,
-    setTasks,
-    selectedTask, setSelectedTask,
-    modalOpen, setModdalOpen,
-  } = useTaskContext();
-  const navigate = useNavigate();
+
+const {tasks, 
+            setTasks,
+            selectedTask, setSelectedTask,
+            modalOpen, setModdalOpen,
+            point} = useTaskContext();
+const [showPopup, setShowPopup] = useState<boolean>(false)
+const handleTaskCompletion = (task: Task) => {
+  setTasks(prev => prev.map(ele => ele.id === task.id ? { ...task, completed: true } : ele))
+  setShowPopup(true)
+  setTimeout(() => {
+    setShowPopup(false)
+  }, 4000)
+}
+
+const navigate = useNavigate()
+
+const handleTreeNavigate = (e: React.MouseEvent<HTMLButtonElement>) => {
+e.preventDefault()
+navigate("/tree")
+}
+const handlePuzzleNavigate = (e: React.MouseEvent<HTMLButtonElement>) => {
+e.preventDefault()
+navigate("/puzzle")
+}
+
 
   return (
     <Container size='4' p='4'>
@@ -50,22 +71,24 @@ function App() {
         </Text>
         <Flex justify='start' direction='column'>
           {tasks.filter(task => !task.completed).map(task => (
-            <Flex key={task.id} gap='4' align='start' pt='5' className='row'>
-              < Button variant='ghost' color='gray'>
-                <Flex as='span' justify='center' align='center' onClick={() => setTasks(prev => prev.map(ele => ele.id === task.id ? { ...task, completed: true } : ele))}>
-                  <CheckCircledIcon />
-                </Flex>
-              </Button>
-              <Flex pb='4' direction='column' flexGrow='1'>
-                <Text size='2'>{task.title}</Text>
-                <Text size='1' color='gray'>{task.description}</Text>
-              </Flex>
-              < Button variant='ghost' color='gray'>
-                <Flex as='span' justify='center' align='center' onClick={() => {
-                  setSelectedTask(task)
-                  setModdalOpen(true)
-                }}>
-                  <Pencil1Icon />
+
+          <Flex key={task.id} gap='4' align='start' pt='5' className='row'>
+            < Button variant='ghost' color='gray'>
+              <Flex as='span' justify='center' align='center' onClick={() => handleTaskCompletion(task)}>
+                <CheckCircledIcon />
+              </Flex> 
+            </Button>
+            <Flex pb='4' direction='column' flexGrow='1'>
+              <Text size='2'>{task.title}</Text> 
+              <Text size='1' color='gray'>{task.description}</Text>
+            </Flex>
+            < Button variant='ghost' color='gray'>
+            <Flex as='span' justify='center' align='center' onClick={() => {
+              setSelectedTask(task) 
+              setModdalOpen(true)
+            }}>
+              <Pencil1Icon />
+
                 </Flex>
               </Button>
               < Button variant='ghost' color='gray'>
@@ -73,6 +96,7 @@ function App() {
                   <DotsHorizontalIcon />
                 </Flex>
               </Button>
+
             </Flex>
           ))}
         </Flex>
@@ -88,40 +112,51 @@ function App() {
             </button>
           </Flex>
         ) : (
-          <Box className='form-wrapper'>
-            <TaskForm onSubmit={e => {
-              e.preventDefault()
-              const formData = new FormData(e.currentTarget)
-              const title = formData.get('title')?.toString()
-              const description = formData.get('description')?.toString()
-              if (!title || !description) return
-              if (selectedTask) {
-                setTasks(prev => prev.map(task => task.id === selectedTask.id ? { ...task, title, description } : task))
-              } else {
-                setTasks(prev => [...prev, { id: Date.now().toString(), title, description, completed: false }])
-              }
-              setModdalOpen(false)
-              setSelectedTask(undefined)
-            }}
-              onCancel={() => setModdalOpen(false)}
-              defaultValues={selectedTask}
-            />
-          </Box>
-        )}
-      </Flex>
-      <Text size='7' weight='bold' >
-        Point
-      </Text>
-      <Text size='5' weight='medium'>
-        {point}
-      </Text>
 
-      <Flex>
-        <button className='gotreebutton' onClick={() => navigate("/tree")}>木の成長を見る</button>
-      </Flex>
-
-      
-    </Container>
+        <Box className='form-wrapper'>
+        <TaskForm onSubmit={e => {
+          e.preventDefault()
+          const formData = new FormData(e.currentTarget)
+          const title = formData.get('title')?.toString()
+          const description = formData.get('description')?.toString()
+          if(!title || !description) return
+          if(selectedTask) {
+            setTasks(prev => prev.map(task => task.id === selectedTask.id ? { ...task, title, description} : task))
+          } else {
+            setTasks(prev => [...prev,{ id: Date.now().toString() , title, description, completed: false }])
+          }
+          setModdalOpen(false)
+          setSelectedTask(undefined)
+        }}
+        onCancel={() => setModdalOpen(false)}
+        defaultValues={selectedTask}
+        />
+      </Box>
+      )}
+    </Flex>
+    <Text size='7' weight='bold' >
+      Point
+    </Text>
+    <Text size='5' weight='medium'>
+      {point}
+    </Text>
+    {showPopup && (
+      <div className='popup'>
+        <Text size='3' weight='medium'>
+          Task completed!
+        </Text>
+        <img src="pointmark.jpeg" alt="pointmark" style={{width: '120px',  margin:"16px auto"}}/>
+        <Flex>
+          <Button onClick={(e) => handleTreeNavigate(e)}>
+            木の成長を見よう！
+          </Button>
+          <Button onClick={(e) => handlePuzzleNavigate(e)}>
+            パズルを見よう！
+          </Button>
+        </Flex>
+      </div>
+    )} 
+  </Container>
 
 
   )
