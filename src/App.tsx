@@ -1,7 +1,9 @@
 import {Box, Button, Container, Flex, Text, TextField} from '@radix-ui/themes'
 import './App.css'
-import { CheckCircledIcon, DotsHorizontalIcon, FontRomanIcon, Pencil1Icon, PlusIcon } from '@radix-ui/react-icons'
-import { useState,useEffect } from 'react'
+
+import { CheckCircledIcon, DotsHorizontalIcon, Pencil1Icon, PlusIcon } from '@radix-ui/react-icons'
+import { useTaskContext } from './contexts/TaskContext'
+
 
 type Task = {
   id: string
@@ -30,10 +32,12 @@ function TaskForm({ onSubmit, onCancel, defaultValues } : { onSubmit : React.For
 }
 
 function App() {
-  const[tasks, setTasks] = useState<Task[]>([])
-  const[modalOpen, setModalOpen] =useState(false)
-  const[selectedTask, setSelectedTask] = useState<Task | undefined>()
-  const point = tasks.filter( it => it.completed).length
+
+const {tasks, 
+            setTasks,
+            selectedTask, setSelectedTask,
+            modalOpen, setModdalOpen,
+            point} = useTaskContext();
 
   return (
     <Container size='4' p='4'>
@@ -56,7 +60,7 @@ function App() {
             < Button variant='ghost' color='gray'>
             <Flex as='span' justify='center' align='center' onClick={() => {
               setSelectedTask(task) 
-              setModalOpen(true)
+              setModdalOpen(true)
             }}>
               <Pencil1Icon />
             </Flex>
@@ -71,7 +75,7 @@ function App() {
         </Flex>
         {!modalOpen ? (
        <Flex justify='start'>
-        <button className='add-button' onClick={() => setModalOpen(true)}>
+        <button className='add-button' onClick={() => setModdalOpen(true)}>
           <span className='icon'>
            <PlusIcon />
           </span>
@@ -93,10 +97,10 @@ function App() {
           } else {
             setTasks(prev => [...prev,{ id: Date.now().toString() , title, description, completed: false }])
           }
-          setModalOpen(false)
+          setModdalOpen(false)
           setSelectedTask(undefined)
         }}
-        onCancel={() => setModalOpen(false)}
+        onCancel={() => setModdalOpen(false)}
         defaultValues={selectedTask}
         />
       </Box>
