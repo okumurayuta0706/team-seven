@@ -1,7 +1,7 @@
 import {Box, Button, Container, Flex, Text, TextField} from '@radix-ui/themes'
 import './App.css'
 import { CheckCircledIcon, DotsHorizontalIcon, FontRomanIcon, Pencil1Icon, PlusIcon } from '@radix-ui/react-icons'
-import { useState } from 'react'
+import { useState,useEffect } from 'react'
 
 type Task = {
   id: string
@@ -9,6 +9,8 @@ type Task = {
   description: string
   completed: boolean
 }
+
+// task1 completed: true or false
 
 function TaskForm({ onSubmit, onCancel, defaultValues } : { onSubmit : React.FormEventHandler<HTMLFormElement>, onCancel: () => void, defaultValues?: Task}) { 
   return        <form onSubmit={onSubmit}>
@@ -31,6 +33,8 @@ function App() {
   const[tasks, setTasks] = useState<Task[]>([])
   const[modalOpen, setModalOpen] =useState(false)
   const[selectedTask, setSelectedTask] = useState<Task | undefined>()
+  const point = tasks.filter( it => it.completed).length
+
   return (
     <Container size='4' p='4'>
       <Flex gap='4' direction='column' >
@@ -98,6 +102,12 @@ function App() {
       </Box>
       )}
     </Flex>
+    <Text size='7' weight='bold' >
+      Point
+    </Text>
+    <Text size='5' weight='medium'>
+      {point}
+    </Text>
   </Container>
   )
 }
