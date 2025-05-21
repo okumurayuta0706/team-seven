@@ -1,7 +1,9 @@
 import {Box, Button, Container, Flex, Text, TextField} from '@radix-ui/themes'
 import './App.css'
+
 import { CheckCircledIcon, DotsHorizontalIcon, Pencil1Icon, PlusIcon } from '@radix-ui/react-icons'
 import { useTaskContext } from './contexts/TaskContext'
+
 
 type Task = {
   id: string
@@ -9,6 +11,8 @@ type Task = {
   description: string
   completed: boolean
 }
+
+// task1 completed: true or false
 
 function TaskForm({ onSubmit, onCancel, defaultValues } : { onSubmit : React.FormEventHandler<HTMLFormElement>, onCancel: () => void, defaultValues?: Task}) { 
   return        <form onSubmit={onSubmit}>
@@ -28,11 +32,13 @@ function TaskForm({ onSubmit, onCancel, defaultValues } : { onSubmit : React.For
 }
 
 function App() {
+
 const {tasks, 
             setTasks,
             selectedTask, setSelectedTask,
             modalOpen, setModdalOpen,
             point} = useTaskContext();
+
   return (
     <Container size='4' p='4'>
       <Flex gap='4' direction='column' >
@@ -100,6 +106,12 @@ const {tasks,
       </Box>
       )}
     </Flex>
+    <Text size='7' weight='bold' >
+      Point
+    </Text>
+    <Text size='5' weight='medium'>
+      {point}
+    </Text>
   </Container>
   )
 }
