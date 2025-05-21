@@ -101,19 +101,18 @@ navigate("/puzzle")
           ))}
         </Flex>
         {!modalOpen ? (
-          <Flex justify='start'>
-            <button className='add-button' onClick={() => setModdalOpen(true)}>
-              <span className='icon'>
-                <PlusIcon />
-              </span>
-              <Text weight='light' size='2'>
-                Add a task
-              </Text>
-            </button>
-          </Flex>
+       <Flex justify='start' style={{ marginBottom: '32px' }}>
+        <button className='add-button' onClick={() => setModdalOpen(true)}>
+          <span className='icon'>
+           <PlusIcon />
+          </span>
+          <Text weight='light' size='2'>
+           Add a task
+         </Text>
+        </button>
+      </Flex>
         ) : (
-
-        <Box className='form-wrapper'>
+        <Box className='form-wrapper' style={{marginBottom: '48px'}}>
         <TaskForm onSubmit={e => {
           e.preventDefault()
           const formData = new FormData(e.currentTarget)
@@ -134,12 +133,14 @@ navigate("/puzzle")
       </Box>
       )}
     </Flex>
+    <Flex direction='row' align='center' gap ="5">
     <Text size='7' weight='bold' >
       Point
     </Text>
-    <Text size='5' weight='medium'>
+    <Text size='7' weight='medium'>
       {point}
     </Text>
+    </Flex>
     {showPopup && (
       <div className='popup'>
         <Text size='3' weight='medium'>
