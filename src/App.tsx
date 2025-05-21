@@ -6,7 +6,6 @@ import { useTaskContext } from './contexts/TaskContext'
 import { useState } from 'react'
 import{ useNavigate } from 'react-router'
 
-import { useNavigate } from "react-router";
 
 type Task = {
   id: string
