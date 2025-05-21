@@ -7,6 +7,7 @@ import { useState } from 'react'
 import{ useNavigate } from 'react-router'
 
 
+
 type Task = {
   id: string
   title: string
@@ -156,6 +157,7 @@ navigate("/puzzle")
       </div>
     )} 
   </Container>
+
 
   )
 }
